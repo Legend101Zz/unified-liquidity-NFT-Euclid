@@ -1,6 +1,7 @@
 {
   "name": "unified-liquidity-nfts",
   "version": "1.0.0",
+  "type": "module",
   "description": "Unified Liquidity NFTs powered by Euclid Protocol on Archway",
   "main": "index.js",
   "workspaces": [
@@ -45,13 +46,15 @@
     "lint-staged": "^15.2.1",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@archwayhq/arch3.js": "^0.6.2",
-    "@cosmjs/cosmwasm-stargate": "^0.32.2",
-    "@cosmjs/proto-signing": "^0.32.2",
-    "dotenv": "^16.4.1"
+    "@archwayhq/arch3.js": "^0.7.3",
+    "@cosmjs/cosmwasm-stargate": "^0.32.4",
+    "@cosmjs/proto-signing": "^0.32.4",
+    "@cosmjs/stargate": "^0.32.4",
+    "dotenv": "^16.4.5",
+    "patch-package": "^8.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
