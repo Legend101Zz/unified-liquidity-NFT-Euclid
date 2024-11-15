@@ -111,7 +111,7 @@ pub fn execute_add_liquidity(
         msg: msg.into(),
         gas_limit: None,
         reply_on: ReplyOn::Success,
-        payload: Binary::default(),
+        // payload: Binary::default(),
     };
 
     // Add to pending operations
@@ -165,7 +165,7 @@ pub fn execute_remove_liquidity(
         msg: msg.into(),
         gas_limit: None,
         reply_on: ReplyOn::Success,
-        payload: Binary::default(),
+        // payload: Binary::default(),
     };
 
     Ok(Response::new()
@@ -214,14 +214,21 @@ pub fn reply(deps: DepsMut, env: Env, msg: Reply) -> Result<Response, ContractEr
 fn extract_reply_data(reply: Reply) -> StdResult<Binary> {
     match reply.result {
         cosmwasm_std::SubMsgResult::Ok(response) => {
-            // First try to get data from msg_responses (CosmWasm 2.0+)
-            if !response.msg_responses.is_empty() {
-                if let Some(first_response) = response.msg_responses.get(0) {
-                    return Ok(first_response.value.clone());
+            // First try to get data from events
+            if !response.events.is_empty() {
+                if let Some(first_event) = response.events.get(0) {
+                    for attr in &first_event.attributes {
+                        // Process each attribute in the event
+                        // If you are looking for a specific key, you can compare it here
+                        if attr.key == "desired_key" {
+                            // If the desired key is found, return the value as Binary
+                            return Ok(Binary::from(attr.value.as_bytes()));
+                        }
+                    }
                 }
             }
 
-            // If msg_responses is empty, try the deprecated data field
+            // If no relevant event data is found, try the deprecated data field
             #[allow(deprecated)]
             match response.data {
                 Some(data) => Ok(data),
@@ -449,7 +456,7 @@ pub fn execute_transfer_position(
         msg: msg.into(),
         gas_limit: None,
         reply_on: ReplyOn::Success,
-        payload: Binary::default(), // Add this
+        // payload: Binary::default(), // Add this
     };
 
     Ok(Response::new()
